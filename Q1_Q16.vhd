@@ -1,4 +1,3 @@
-
 -- Mealy Machine (mealy.vhd)
 -- Asynchronous reset, active low
 ------------------------------------------------------
@@ -34,49 +33,43 @@ BEGIN
     CASE curState IS
       WHEN INIT =>
         IF x_reg='0' THEN
-          --m<='1';			--ADD
-          m<="11";
+          m<="11";			--ADD
           nextState <= COUNT_0;
         ELSE
-          --m<='0';			-- RESET
-          m<="00";
+          m<="00";			-- RESET
           nextState <= INIT;
         END IF;
       WHEN COUNT_0 =>
         IF (c_value=15) AND (x_reg='1') THEN
-        	--m<='0';			--Reset
-            m<="00";
+            m<="01";  -- SET TO 1
         	nextState <= COUNT_1;     
         ELSIF x_reg='0' THEN
-          --m<='1';			--ADD
-          m<="11";
+          m<="11";			--ADD
           nextState <= COUNT_0;
+          -----------------------------------------
+        ELSIF c_value>15 AND x_reg='1' THEN
+          m<="01";
+          nextState <= COUNT_1;
+          ------------------------------------------
         ELSE
-          --m<='0';			--RESET
-          m<="00";
+          m<="00";			--RESET
           nextState <= INIT;
         END IF;
       WHEN COUNT_1 =>
         --IF (x_reg='1') AND (c_value=17) THEN
-        IF (c_value=17) THEN
-          --m<='0';			--RESET
-          m<="00";
+        IF (c_value=16) THEN
+          m<="00";			--RESET
           nextState <= INIT;
         ELSIF x_reg='1' THEN
           nextState <= COUNT_1;
-          --m<='1';			--ADD
-          m<="11";
+          m<="11";			--ADD
         ELSE
-          
-          --m<='0';			--RESET
-          --m<='1';			--ADD
-          m<="01";
-          
+          m<="01";   -- SET TO 1
           nextState <= COUNT_0;
-        END IF;
-        
+        END IF; 
       WHEN OTHERS =>
           nextState <= INIT;
+          m<="00";			--RESET
 
 
     END CASE;
@@ -85,9 +78,9 @@ BEGIN
   combi_out: PROCESS(curState,c_value)
   BEGIN
     y <= '0'; -- assign default value
-    IF (curState = COUNT_1) AND c_value=16 THEN
+    IF (curState = COUNT_1) AND c_value=17 THEN
       y <= '1';
-      --m <= '0';
+
     END IF;
   END PROCESS; -- combi_output
   -----------------------------------------------------
@@ -134,3 +127,4 @@ BEGIN
 
   
 END; -- arch_mealy
+
