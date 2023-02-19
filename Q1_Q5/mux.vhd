@@ -6,8 +6,8 @@ ENTITY mux IS
 END mux;
 
 -- One entity, two separate architectures.
--- The architecture of choice can be bound to the entity 
--- at the time of instantiation in the testbench.
+-- I would prefer to use the sequential implementation as the output only depends on the address and not on a or b
+-- and this implementation does not create a latch as all the inputs have been predefined unlike the data flow implementation.
 ---------------Data Flow----------------------------
 ARCHITECTURE dataflow OF mux IS
 BEGIN
