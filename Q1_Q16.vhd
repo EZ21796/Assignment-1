@@ -22,8 +22,7 @@ ARCHITECTURE myArch OF recog2 IS
   --------------------------------------------------------------------------
     --SIGNALS 
   SIGNAL c_value : integer RANGE 0 to 31; -- ONLY NEED 0 TO 255 (8 BITS)
-  --SIGNAL m : BIT; --SIGNAL FOR ENABLE COUNT & RESET COUNT
-  signal m: std_logic_vector(1 downto 0);
+  SIGNAL m: std_logic_vector(1 downto 0);
   SIGNAL x_reg : BIT;
   --------------------------------------------------------------------------
 BEGIN
@@ -56,7 +55,6 @@ BEGIN
           nextState <= INIT;
         END IF;
       WHEN COUNT_1 =>
-        --IF (x_reg='1') AND (c_value=17) THEN
         IF (c_value=16) THEN
           m<="00";			--RESET
           nextState <= INIT;
@@ -78,9 +76,7 @@ BEGIN
   combi_out: PROCESS(curState,c_value)
   BEGIN
     y <= '0'; -- assign default value
-    IF (curState = COUNT_1) AND c_value=17 THEN
-      y <= '1';
-
+    IF (curState = COUNT_1) AND c_value=16 THEN y <= '1';
     END IF;
   END PROCESS; -- combi_output
   -----------------------------------------------------
@@ -111,7 +107,6 @@ BEGIN
       -----------------------
     ELSIF clk'EVENT AND clk='1' THEN
       -----------------------
-      --IF (m='1') THEN c_value<=c_value+1;-- INCREMENT
       IF m="11" THEN c_value<=c_value+1;-- INCREMENT
       ELSIF m="01" THEN c_value<=1;
       ELSE c_value<=0;
@@ -119,9 +114,6 @@ BEGIN
 	  END IF;
     END IF;
   END PROCESS; -- seq1
-
-
---q<=conv_std_logic_vector(c_value,8); -- convert integer to bit string
   -----------------------------------------------------
   
 
