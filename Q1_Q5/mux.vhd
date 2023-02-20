@@ -5,7 +5,7 @@ ENTITY mux IS
     	q:OUT BIT);
 END mux;
 
--- One entity, two separate architectures.
+-- One entity, four separate architectures (Data Flow, Gates, Sequential and Bool).
 -- I would prefer to use the sequential implementation as the output only depends on the address and not on a or b
 -- and this implementation does not create a latch as all the inputs have been predefined unlike the data flow implementation.
 ---------------Data Flow----------------------------
